@@ -10,7 +10,14 @@ module Calculator
       end
 
       numbers = numbers.gsub("\n", delimiter)
-      numbers.split(delimiter).map(&:to_i).sum
+      values = numbers.split(delimiter).map(&:to_i)
+
+      negatives = values.select { |n| n < 0 }
+      if negatives.any?
+        raise "negative numbers not allowed #{negatives.join(',')}"
+      end
+
+      values.sum
     end
   end
 end
