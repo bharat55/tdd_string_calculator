@@ -2,40 +2,62 @@ require 'rails_helper'
 
 RSpec.describe Calculator::StringCalculator do
   describe '.add' do
+    subject(:result) { described_class.add(input) }
+
     context 'when input is an empty string' do
+      let(:input) { '' }
+
       it 'returns 0' do
-        result = described_class.add('')
         expect(result).to eq(0)
       end
     end
 
-    context 'when the input is a non-empty string' do
-      it 'returns the integer value of the string when it contains a single number' do
-        expect(described_class.add("1")).to eq(1)
-      end
+    context 'when input is a single number' do
+      let(:input) { '1' }
 
-      it "correctly adds two numbers provided as a comma-separated string" do
-        expect(described_class.add("5,6")).to eq(11)
+      it 'returns the number itself' do
+        expect(result).to eq(1)
       end
-
-      it "returns the sum of multiple comma-separated numbers" do
-        expect(described_class.add("1,2,3,4")).to eq(10)
-      end
-
-      it "handles newlines between numbers" do
-        expect(described_class.add("1\n2,3")).to eq(6)
-      end
-
-      it 'returns the sum when a custom delimiter is provided' do
-        expect(described_class.add("//;\n1;2")).to eq(3)
-      end
-
-      it "raises error on negative numbers" do
-        expect { described_class.add("1,-2,3,-4") }.to raise_error("negative numbers not allowed -2,-4")
-      end
-      
-      
     end
-  
+
+    context 'when input contains two comma-separated numbers' do
+      let(:input) { '5,6' }
+
+      it 'returns their sum' do
+        expect(result).to eq(11)
+      end
+    end
+
+    context 'when input contains multiple comma-separated numbers' do
+      let(:input) { '1,2,3,4' }
+
+      it 'returns their sum' do
+        expect(result).to eq(10)
+      end
+    end
+
+    context 'when input contains newlines between numbers' do
+      let(:input) { "1\n2,3" }
+
+      it 'returns their sum' do
+        expect(result).to eq(6)
+      end
+    end
+
+    context 'when input uses a custom delimiter' do
+      let(:input) { "//;\n1;2" }
+
+      it 'parses the delimiter and returns the sum' do
+        expect(result).to eq(3)
+      end
+    end
+
+    context 'when input contains negative numbers' do
+      let(:input) { '1,-2,3,-4' }
+
+      it 'raises an error listing all negative numbers' do
+        expect { result }.to raise_error("negative numbers not allowed -2,-4")
+      end
+    end
   end
 end
