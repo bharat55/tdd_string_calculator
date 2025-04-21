@@ -13,6 +13,11 @@ RSpec.describe Calculator::StringCalculator do
       it 'returns the integer value of the string when it contains a single number' do
         expect(described_class.add("1")).to eq(1)
       end
+
+      it "correctly adds two numbers provided as a comma-separated string" do
+        expect(described_class.add("5,6")).to eq(11)
+      end
+      
     end
   
   end
