@@ -4,6 +4,7 @@ module Calculator
       return 0 if numbers.empty?
       numbers = numbers.split.map(&:to_i)
       return numbers.first if numbers.length == 1
+      return numbers.sum
     end
   end
 end
